@@ -8,5 +8,5 @@ publish = false
 sp1-zkvm = { workspace = true }
 lib = { path = "../lib", package = "json-lib" }
 log = "0.4.25"
-sha2-v0-10-8 = { workspace = true }
+sha2-v0-10-9 = { workspace = true }
 rsa = { workspace = true }
