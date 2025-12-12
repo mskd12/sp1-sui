@@ -38,7 +38,9 @@ FQIDAQAB
     let (pk, vk) = client.setup(JSON_ELF);
 
     // Generate the proof.
-    let proof = client.prove(&pk, &stdin).run().expect("proving failed");
+    let proof = client.prove(&pk, &stdin).groth16().run().expect("proving failed");
+
+    println!("Proof: {:#?}", proof);
 
     // Verify the proof.
     client.verify(&proof, &vk).expect("verification failed");

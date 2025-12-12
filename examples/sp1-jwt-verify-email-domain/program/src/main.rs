@@ -3,9 +3,10 @@ sp1_zkvm::entrypoint!(main);
 
 use lib::{split_email, split_jwt, pem_to_der};
 use rsa::{pkcs8::DecodePublicKey, Pkcs1v15Sign, RsaPublicKey};
-use sha2_v0_10_8::{Digest, Sha256};
+use sha2_v0_10_9::{Digest, Sha256};
 
 pub fn main() {
+    println!("cycle-tracker-start: compute");
     // Read input values: JWT token, RSA public key, and the expected domain
     let token = sp1_zkvm::io::read::<String>();
     let rsa_public_key = sp1_zkvm::io::read::<String>();
@@ -15,7 +16,7 @@ pub fn main() {
     sp1_zkvm::io::commit(&domain);
 
     // Split the JWT into its components: header, payload, and signature
-    let (header, payload, signature) = split_jwt(&token)
+    let (_header, payload, signature) = split_jwt(&token)
         .expect("Failed to decode JWT"); // Panic if JWT parsing fails
     
     // Convert the PEM public key into DER format for RSA verification
@@ -51,4 +52,6 @@ pub fn main() {
 
     // Commit the verification result (proof that the email domain is correct)
     sp1_zkvm::io::commit(&verified);
+
+    println!("cycle-tracker-end: compute");
 }
