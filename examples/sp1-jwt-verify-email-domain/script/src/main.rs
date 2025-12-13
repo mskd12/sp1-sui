@@ -1,6 +1,7 @@
 //! A simple script to generate and verify the proof of a given program.
 use sp1_sdk::{include_elf, utils, ProverClient, SP1ProofWithPublicValues, SP1Stdin};
 const JSON_ELF: &[u8] = include_elf!("json-program");
+use std::time::Instant;
 
 fn main() {
     // Set up logging for debugging and tracing.
@@ -37,8 +38,13 @@ FQIDAQAB
     // Set up the proving and verification keys.
     let (pk, vk) = client.setup(JSON_ELF);
 
+    let start = Instant::now();
+
     // Generate the proof.
     let proof = client.prove(&pk, &stdin).groth16().run().expect("proving failed");
+
+        let duration = start.elapsed();
+        println!("Proof generation took: {:.2?}", duration);
 
     println!("Proof: {:#?}", proof);
 
